@@ -1,12 +1,6 @@
 import * as CryptoJS from "crypto-js";
 
 class Block {
-    public index: number;
-    public hash: string;
-    public previousHash: string;
-    public data: string;
-    public timestamp: number;
-
     static calculateBlockHash = (
         index: number,
         previousHash: string,
@@ -14,6 +8,19 @@ class Block {
         data: string
     ):string => CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
 
+    static vaildateStructure = (aBlock: Block) : boolean =>
+        typeof aBlock.index === "number" && 
+        typeof aBlock.hash === "string" && 
+        typeof aBlock.previousHash === "string" &&
+        typeof aBlock.data === "string" &&
+        typeof aBlock.timestamp === "number";
+
+    public index: number;
+    public hash: string;
+    public previousHash: string;
+    public data: string;
+    public timestamp: number;
+        
     constructor(
         index: number,
         hash: string,
@@ -38,25 +45,47 @@ const getLatestBlock = (): Block => blockchain[blockchain.length - 1];
 const getNewTimeStamp = (): number => Math.round(new Date().getTime() / 1000)
 
 const createNewBlock = (data: string): Block => {
-    const previosBlock: Block = getLatestBlock();
-    const newIndex: number = previosBlock.index + 1;
+    const previousBlock: Block = getLatestBlock();
+    const newIndex: number = previousBlock.index + 1;
     const newTimestamp: number = getNewTimeStamp();
     const newHash : string = Block.calculateBlockHash(
         newIndex,
-        previosBlock.hash,
+        previousBlock.hash,
         newTimestamp,
         data
     );
     const newBlock : Block = new Block(
         newIndex,
         newHash,
-        previosBlock.hash,
+        previousBlock.hash,
         data,
         newTimestamp
     );
     return newBlock;
-}
+};
 
-console.log(createNewBlock("Hello"), createNewBlock("bye bye"));
+const getHashforBlock = (aBlock: Block): string => Block.calculateBlockHash(aBlock.index, aBlock.previousHash, aBlock.timestamp, aBlock.data);
+
+const isBlockVaild = (candidateBlock : Block, previousBlock: Block) : boolean => { 
+    if(!Block.vaildateStructure(candidateBlock)){
+        return false;
+    } else if (previousBlock.index + 1 !== candidateBlock.index) {
+        return false;
+    } else if (previousBlock.hash !== candidateBlock.previousHash) {
+        return false;
+    } else if (getHashforBlock(candidateBlock) !== candidateBlock.hash) {
+        return false;
+    } else {
+        return true;
+    }
+};
+
+const addBlock = (candidateBlock: Block) : void => {
+    if (isBlockVaild(candidateBlock, getLatestBlock())) {
+        blockchain.push(candidateBlock);
+    }
+};
+
+console.log(createNewBlock("Hello"), createNewBlock("bye bye"), createNewBlock("hahaha"));
 
 export{};
