@@ -34,3 +34,14 @@ yarn global add typescript
 ```
 yarn start
 ```
+
+# Testing
+## Create block
+```
+createNewBlock("{Block Name}");
+```
+## Validate block
+* Checking previous hash in log
+```
+console.log(blockchain);
+```
