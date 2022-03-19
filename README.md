@@ -8,7 +8,7 @@ Make Blockchain with Typescript
   tsc-watch
 
 
-# Setting 
+# Setting Typescript Up
 
 
 1. Install
@@ -24,7 +24,11 @@ yarn add tsc-watch --dev
 ```
 
 2. Install typescript
-```yarn global add typescript```
+```
+yarn global add typescript
+```
 
 3. Start yarn
-```yarn start```
+```
+yarn start
+```
