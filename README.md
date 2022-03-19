@@ -2,5 +2,7 @@
 
 Make Blockchain with Typescript
  * requirement
+  node,
+  typescript,
   crypto-js,
   tsc-watch
