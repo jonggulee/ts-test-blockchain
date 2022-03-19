@@ -21,6 +21,10 @@ npm install --global yarn
 
 # tsc-watch
 yarn add tsc-watch --dev
+
+# crypto-js
+yarn add crypto-js
+
 ```
 
 2. Install typescript
